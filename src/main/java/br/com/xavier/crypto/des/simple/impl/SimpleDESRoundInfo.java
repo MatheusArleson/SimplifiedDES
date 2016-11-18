@@ -1,24 +1,26 @@
-package br.com.xavier.crypto.des.simple;
+package br.com.xavier.crypto.des.simple.impl;
 
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class SimpleDESRoundInfo implements Serializable, Comparable<SimpleDESRoundInfo> {
+final class SimpleDESRoundInfo implements Serializable, Comparable<SimpleDESRoundInfo> {
 	
 	private static final long serialVersionUID = 270813157971429754L;
 	
 	//XXX PROPERTIES
-	private final byte[] leftBytes;
-	private final byte[] rightBytes;
+	private final int blockNumber;
+	private final byte[] blockLeftBytes;
+	private final byte[] blockRightBytes;
 	private final Integer roundNumber; 
 	private final Boolean isEncrypt;
 	
 	//XXX CONSTRUCTOR
-	public SimpleDESRoundInfo(byte[] leftBytes, byte[] rightBytes, int roundNumber, boolean isEncrypt) {
+	protected SimpleDESRoundInfo(int blockNumber, byte[] blockLeftBytes, byte[] blockRightBytes, int roundNumber, boolean isEncrypt) {
 		super();
-		this.leftBytes = Objects.requireNonNull( leftBytes );
-		this.rightBytes = Objects.requireNonNull( rightBytes );
+		this.blockNumber = Objects.requireNonNull(blockNumber);
+		this.blockLeftBytes = Objects.requireNonNull( blockLeftBytes );
+		this.blockRightBytes = Objects.requireNonNull( blockRightBytes );
 		this.roundNumber = Objects.requireNonNull( roundNumber );
 		this.isEncrypt = Objects.requireNonNull( isEncrypt );
 	}
@@ -29,8 +31,8 @@ public class SimpleDESRoundInfo implements Serializable, Comparable<SimpleDESRou
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (isEncrypt ? 1231 : 1237);
-		result = prime * result + Arrays.hashCode(leftBytes);
-		result = prime * result + Arrays.hashCode(rightBytes);
+		result = prime * result + Arrays.hashCode(blockLeftBytes);
+		result = prime * result + Arrays.hashCode(blockRightBytes);
 		result = prime * result + roundNumber;
 		return result;
 	}
@@ -48,9 +50,9 @@ public class SimpleDESRoundInfo implements Serializable, Comparable<SimpleDESRou
 			return false;
 		if (roundNumber != other.roundNumber)
 			return false;
-		if (!Arrays.equals(leftBytes, other.leftBytes))
+		if (!Arrays.equals(blockLeftBytes, other.blockLeftBytes))
 			return false;
-		if (!Arrays.equals(rightBytes, other.rightBytes))
+		if (!Arrays.equals(blockRightBytes, other.blockRightBytes))
 			return false;
 		return true;
 	}
@@ -58,8 +60,8 @@ public class SimpleDESRoundInfo implements Serializable, Comparable<SimpleDESRou
 	@Override
 	public String toString() {
 		return "CryptoRoundInfo [" 
-				+ "leftBytes=" + Arrays.toString(leftBytes) 
-				+ ", rightBytes=" + Arrays.toString(rightBytes) 
+				+ "blockLeftBytes=" + Arrays.toString(blockLeftBytes) 
+				+ ", blockRightBytes=" + Arrays.toString(blockRightBytes) 
 				+ ", roundNumber=" + roundNumber
 				+ ", isEncrypt=" + isEncrypt 
 		+ "]";
@@ -70,12 +72,16 @@ public class SimpleDESRoundInfo implements Serializable, Comparable<SimpleDESRou
 	}
 	
 	//XXX GETTERS
-	public byte[] getLeftBytes() {
-		return leftBytes;
+	public int getBlockNumber() {
+		return blockNumber;
+	}
+	
+	public byte[] getBlockLeftBytes() {
+		return blockLeftBytes.clone();
 	}
 
-	public byte[] getRightBytes() {
-		return rightBytes;
+	public byte[] getBlockRightBytes() {
+		return blockRightBytes.clone();
 	}
 
 	public Integer getRoundNumber() {
