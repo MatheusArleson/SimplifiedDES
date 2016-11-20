@@ -1,5 +1,7 @@
 package br.com.xavier.crypto.des.simple.impl;
 
+import java.util.BitSet;
+
 import org.apache.commons.codec.binary.BinaryCodec;
 
 public final class ByteArrayUtils {
@@ -36,4 +38,28 @@ public final class ByteArrayUtils {
 
 		return result;
 	}
+
+	public static BitSet getBits(byte[] bytes, int startPosition, int finalPosition){
+		if(startPosition < 0){
+			throw new IllegalArgumentException("start position must be equal or greather than zero.");
+		}
+		
+		if(finalPosition > bytes.length * 8){
+			throw new IllegalArgumentException("final position must be less or equal than byte size.");
+		}
+		
+		BitSet bs = BitSet.valueOf(bytes);
+		BitSet subBs = new BitSet();
+		
+		for (int i = startPosition; i < finalPosition; i++) {
+			if(bs.get(i)){
+				subBs.set(i);
+			} else {
+				subBs.clear(i);
+			}
+		}
+		
+		return subBs;
+	}
+		
 }

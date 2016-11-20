@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Queue;
 
-import org.apache.commons.codec.binary.BinaryCodec;
 import org.apache.commons.io.IOUtils;
 
 import br.com.xavier.crypto.des.simple.enums.SimpleDESConstants;
